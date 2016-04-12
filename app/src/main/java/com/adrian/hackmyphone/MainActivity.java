@@ -14,6 +14,7 @@ import android.view.Gravity;
 import android.view.MenuItem;
 
 import com.adrian.hackmyphone.fragments.BluetoothFragment;
+import com.adrian.hackmyphone.fragments.ContactsFragment;
 import com.adrian.hackmyphone.fragments.SensorsFragment;
 import com.adrian.hackmyphone.fragments.TelephonyFragment;
 import com.adrian.hackmyphone.fragments.WifiFragment;
@@ -60,6 +61,8 @@ public class MainActivity extends AppCompatActivity implements NavigationView.On
             replaceFragment(WifiFragment.newInstance());
         } else if(id == R.id.bluetooth && !fragmentExists(BluetoothFragment.class)) {
             replaceFragment(BluetoothFragment.newInstance());
+        } else if(id == R.id.contacts && !fragmentExists(ContactsFragment.class)) {
+            replaceFragment(ContactsFragment.newInstance());
         }
         mDrawerLayout.closeDrawer(GravityCompat.START);
         return true;

@@ -20,4 +20,6 @@
     <string name="bounded_devices">Sparowane urządzenia</string>
     <string name="found_devices">Znalezione urządzenia</string>
     <string name="none">Brak</string>
+    <string name="contacts">Kontakty</string>
+    <string name="allow_read_contacts_to_work">Musisz zezwolić na odczyt kontaktów, aby ta zakładka działała</string>
 </resources>
