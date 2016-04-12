@@ -36,6 +36,8 @@ android {
 dependencies {
     compile fileTree(dir: 'libs', include: ['*.jar'])
     testCompile 'junit:junit:4.12'
+
+    //RxJava
     compile 'com.android.support:appcompat-v7:23.3.0'
     compile 'com.android.support:recyclerview-v7:23.3.0'
     compile 'com.android.support:cardview-v7:23.3.0'
@@ -43,8 +45,6 @@ dependencies {
     compile 'com.jakewharton:butterknife:7.0.1'
     compile 'com.google.android.gms:play-services-location:8.4.0'
     compile 'com.android.support:support-v4:23.3.0'
-
-    //RxJava
     compile 'io.reactivex:rxandroid:1.1.0'
     compile 'io.reactivex:rxjava:1.1.3'
 }

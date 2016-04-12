@@ -1,9 +1,13 @@
 package com.adrian.hackmyphone.fragments;
 
 
-import android.app.Fragment;
+import android.Manifest;
 import android.content.Context;
+import android.content.pm.PackageManager;
 import android.os.Bundle;
+import android.support.annotation.NonNull;
+import android.support.v4.app.ActivityCompat;
+import android.support.v4.app.Fragment;
 import android.telephony.TelephonyManager;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -25,12 +29,14 @@ import rx.schedulers.Schedulers;
 
 public class TelephonyFragment extends Fragment {
 
+    private static final int ASK_PHONE_STATE = 1;
     @Bind(R.id.text)
     TextView mTextView;
     @Bind(R.id.progress_bar)
     ProgressBar mProgressBar;
 
     private Subscription mSubscription;
+    private TelephonyManager mTelephonyManager;
 
 
     public static Fragment newInstance() {
@@ -42,8 +48,32 @@ public class TelephonyFragment extends Fragment {
                              Bundle savedInstanceState) {
         View view = inflater.inflate(R.layout.fragment_telephony, container, false);
         ButterKnife.bind(this, view);
-        TelephonyManager telephonyManager= (TelephonyManager) getActivity().getSystemService(Context.TELEPHONY_SERVICE);
+        mTelephonyManager= (TelephonyManager) getActivity().getSystemService(Context.TELEPHONY_SERVICE);
 
+        if (ActivityCompat.checkSelfPermission(getActivity(), Manifest.permission.READ_PHONE_STATE) != PackageManager.PERMISSION_GRANTED) {
+            requestPermissions(new String[] {Manifest.permission.READ_PHONE_STATE}, ASK_PHONE_STATE);
+        } else getPhoneInfo(mTelephonyManager);
+
+        return view;
+    }
+
+    @Override
+    public void onRequestPermissionsResult(int requestCode, @NonNull String[] permissions, @NonNull int[] grantResults) {
+        switch (requestCode) {
+            case ASK_PHONE_STATE: {
+                getPhoneInfo(mTelephonyManager);
+                break;
+            }
+        }
+    }
+
+    @Override
+    public void onDetach() {
+        if(mSubscription!=null) mSubscription.unsubscribe();
+        super.onDetach();
+    }
+
+    private void getPhoneInfo(TelephonyManager telephonyManager) {
         mSubscription = Observable.defer(() -> Observable.from(telephonyManager.getClass().getDeclaredMethods()))
                 .onErrorResumeNext(throwable -> Observable.empty())
                 .filter(method -> method.getParameterTypes().length == 0)
@@ -56,13 +86,6 @@ public class TelephonyFragment extends Fragment {
                     mTextView.setText(s);
                     mProgressBar.setVisibility(View.GONE);
                 });
-        return view;
-    }
-
-    @Override
-    public void onDetach() {
-        if(mSubscription!=null) mSubscription.unsubscribe();
-        super.onDetach();
     }
 
     private String invokeToString(Method method, Object o) {
@@ -72,9 +95,9 @@ public class TelephonyFragment extends Fragment {
             b.append(method.getName()).append(": ");
             b.append(invoke).append("\n");
         } catch (IllegalAccessException e) {
-            e.printStackTrace();
+//            e.printStackTrace();
         } catch (InvocationTargetException e) {
-            e.printStackTrace();
+//            e.printStackTrace();
         }
         return b.toString();
     }

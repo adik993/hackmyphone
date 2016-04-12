@@ -3,13 +3,20 @@
 
     <group android:checkableBehavior="single">
 
-        <item android:id="@+id/sensors"
-              android:title="@string/sensors"
-            android:checked="true"/>
+        <item
+            android:id="@+id/sensors"
+            android:checked="true"
+            android:title="@string/sensors"/>
 
-        <item android:id="@+id/telephony"
-              android:title="@string/telephony"
-            android:checked="false"/>
+        <item
+            android:id="@+id/telephony"
+            android:checked="false"
+            android:title="@string/telephony"/>
+
+        <item
+            android:id="@+id/wifi"
+            android:checked="false"
+            android:title="@string/wifi"/>
 
     </group>
 </menu>

@@ -13,4 +13,5 @@
     <string name="telephony">Telefon</string>
     <string name="open">Otwórz</string>
     <string name="close">Zamknij</string>
+    <string name="wifi">Wi-Fi</string>
 </resources>

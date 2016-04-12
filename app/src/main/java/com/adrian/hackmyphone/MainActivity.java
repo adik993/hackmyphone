@@ -1,10 +1,10 @@
 package com.adrian.hackmyphone;
 
-import android.app.Fragment;
-import android.app.FragmentManager;
-import android.app.FragmentTransaction;
 import android.os.Bundle;
 import android.support.design.widget.NavigationView;
+import android.support.v4.app.Fragment;
+import android.support.v4.app.FragmentManager;
+import android.support.v4.app.FragmentTransaction;
 import android.support.v4.view.GravityCompat;
 import android.support.v4.widget.DrawerLayout;
 import android.support.v7.app.ActionBarDrawerToggle;
@@ -15,6 +15,7 @@ import android.view.MenuItem;
 
 import com.adrian.hackmyphone.fragments.SensorsFragment;
 import com.adrian.hackmyphone.fragments.TelephonyFragment;
+import com.adrian.hackmyphone.fragments.WifiFragment;
 
 import butterknife.Bind;
 import butterknife.ButterKnife;
@@ -54,19 +55,21 @@ public class MainActivity extends AppCompatActivity implements NavigationView.On
             replaceFragment(SensorsFragment.newInstance());
         } else if(id == R.id.telephony && !fragmentExists(TelephonyFragment.class)) {
             replaceFragment(TelephonyFragment.newInstance());
+        } else if(id == R.id.wifi && !fragmentExists(WifiFragment.class)) {
+            replaceFragment(WifiFragment.newInstance());
         }
         mDrawerLayout.closeDrawer(GravityCompat.START);
         return true;
     }
 
     boolean fragmentExists(Class<? extends Fragment> clazz) {
-        Fragment fragment = getFragmentManager().findFragmentById(R.id.fragment_container);
+        Fragment fragment = getSupportFragmentManager().findFragmentById(R.id.fragment_container);
         return fragment != null && clazz.isInstance(fragment);
     }
 
     public void replaceFragment(Fragment newFragment) {
         getFragmentManager().popBackStackImmediate(TAG, FragmentManager.POP_BACK_STACK_INCLUSIVE);
-        FragmentTransaction transaction = getFragmentManager().beginTransaction();
+        FragmentTransaction transaction = getSupportFragmentManager().beginTransaction();
         transaction.replace(R.id.fragment_container, newFragment, TAG);
         transaction.commit();
     }
