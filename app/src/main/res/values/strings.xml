@@ -14,4 +14,10 @@
     <string name="open">Otwórz</string>
     <string name="close">Zamknij</string>
     <string name="wifi">Wi-Fi</string>
+    <string name="unable_to_discover">Nie udało się wyszukać urządzeń</string>
+    <string name="bluetooth">Bluetooth</string>
+    <string name="bt_needed">BT musi być włączony, aby ta zakładka działała</string>
+    <string name="bounded_devices">Sparowane urządzenia</string>
+    <string name="found_devices">Znalezione urządzenia</string>
+    <string name="none">Brak</string>
 </resources>

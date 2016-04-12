@@ -76,11 +76,13 @@ public class WifiFragment extends Fragment {
         @Override
         public void onReceive(Context context, Intent intent) {
             List<ScanResult> scanResults = mWifiManager.getScanResults();
+            mAdapter.elems.clear();
             Observable.from(scanResults)
                     .map(WifiItem::new)
                     .toList()
                     .toBlocking()
                     .subscribe(wifiItems -> mAdapter.elems.addAll(wifiItems));
+            mAdapter.notifyDataSetChanged();
             mProgressBar.setVisibility(View.GONE);
         }
     }

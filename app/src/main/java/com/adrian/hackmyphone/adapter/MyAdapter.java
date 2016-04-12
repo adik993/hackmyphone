@@ -5,10 +5,14 @@ import android.util.SparseArray;
 import android.view.LayoutInflater;
 import android.view.ViewGroup;
 
+import com.adrian.hackmyphone.databinders.InfoItemDataBinder;
+import com.adrian.hackmyphone.databinders.ProgressItemDataBinder;
 import com.adrian.hackmyphone.databinders.SensorDataBinder;
 import com.adrian.hackmyphone.databinders.SimpleCardDataBinder;
 import com.adrian.hackmyphone.databinders.SimpleTextDataBinder;
+import com.adrian.hackmyphone.items.InfoItem;
 import com.adrian.hackmyphone.items.IntentItem;
+import com.adrian.hackmyphone.items.ProgressItem;
 import com.adrian.hackmyphone.items.Section;
 import com.adrian.hackmyphone.items.SensorItem;
 import com.adrian.hackmyphone.items.Titled;
@@ -30,6 +34,8 @@ public class MyAdapter extends RecyclerView.Adapter<RecyclerView.ViewHolder> {
         mDataBinders.put(1, new SensorDataBinder(this));
         mDataBinders.put(2, new SimpleTextDataBinder());
         mDataBinders.put(3, new SimpleCardDataBinder());
+        mDataBinders.put(4, new InfoItemDataBinder());
+        mDataBinders.put(5, new ProgressItemDataBinder());
     }
 
     @Override
@@ -63,7 +69,9 @@ public class MyAdapter extends RecyclerView.Adapter<RecyclerView.ViewHolder> {
         Object o = elems.get(position);
         if(o instanceof SensorItem) return 1;
         else if(o instanceof IntentItem) return 3;
+        else if(o instanceof InfoItem) return 4;
         else if(o instanceof Titled) return 2;
+        else if(o instanceof ProgressItem) return 5;
         else return super.getItemViewType(position);
     }
 

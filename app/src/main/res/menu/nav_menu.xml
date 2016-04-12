@@ -18,5 +18,9 @@
             android:checked="false"
             android:title="@string/wifi"/>
 
+        <item android:id="@+id/bluetooth"
+              android:title="@string/bluetooth"
+              android:checked="false" />
+
     </group>
 </menu>

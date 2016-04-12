@@ -13,6 +13,7 @@ import android.support.v7.widget.Toolbar;
 import android.view.Gravity;
 import android.view.MenuItem;
 
+import com.adrian.hackmyphone.fragments.BluetoothFragment;
 import com.adrian.hackmyphone.fragments.SensorsFragment;
 import com.adrian.hackmyphone.fragments.TelephonyFragment;
 import com.adrian.hackmyphone.fragments.WifiFragment;
@@ -57,6 +58,8 @@ public class MainActivity extends AppCompatActivity implements NavigationView.On
             replaceFragment(TelephonyFragment.newInstance());
         } else if(id == R.id.wifi && !fragmentExists(WifiFragment.class)) {
             replaceFragment(WifiFragment.newInstance());
+        } else if(id == R.id.bluetooth && !fragmentExists(BluetoothFragment.class)) {
+            replaceFragment(BluetoothFragment.newInstance());
         }
         mDrawerLayout.closeDrawer(GravityCompat.START);
         return true;
