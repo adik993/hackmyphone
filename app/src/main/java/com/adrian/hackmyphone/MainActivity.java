@@ -41,6 +41,10 @@ public class MainActivity extends AppCompatActivity implements NavigationView.On
         ActionBarDrawerToggle drawerToggle = new ActionBarDrawerToggle(this, mDrawerLayout, mToolbar, R.string.open, R.string.close);
         mDrawerLayout.addDrawerListener(drawerToggle);
         drawerToggle.syncState();
+
+        if(savedInstanceState==null) {
+            replaceFragment(SensorsFragment.newInstance());
+        }
     }
 
     @Override

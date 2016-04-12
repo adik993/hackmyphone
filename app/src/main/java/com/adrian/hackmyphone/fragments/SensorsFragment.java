@@ -92,7 +92,7 @@ public class SensorsFragment extends Fragment implements OnClickListener, Sensor
 
     @Override
     public void onDestroy() {
-
+        sensorManager.unregisterListener(this);
         super.onDestroy();
     }
 
