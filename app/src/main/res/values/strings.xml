@@ -5,4 +5,12 @@
     <string name="combined_section">Obrobione dane</string>
     <string name="compass">Kompas 3D</string>
     <string name="accelerometer">Akcelerometr</string>
+
+    <!-- TODO: Remove or change this placeholder text -->
+    <string name="hello_blank_fragment">Hello blank fragment</string>
+    <string name="author">Adrian Skrobacz</string>
+    <string name="sensors">Sensory</string>
+    <string name="telephony">Telefon</string>
+    <string name="open">Otwórz</string>
+    <string name="close">Zamknij</string>
 </resources>

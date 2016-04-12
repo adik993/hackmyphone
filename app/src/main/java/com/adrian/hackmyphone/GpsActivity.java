@@ -10,6 +10,7 @@ import android.support.annotation.NonNull;
 import android.support.v4.app.ActivityCompat;
 import android.support.v7.app.AppCompatActivity;
 import android.widget.TextView;
+import android.widget.Toast;
 
 import com.google.android.gms.common.ConnectionResult;
 import com.google.android.gms.common.GoogleApiAvailability;
@@ -27,6 +28,7 @@ import butterknife.ButterKnife;
 public class GpsActivity extends AppCompatActivity implements GoogleApiClient.ConnectionCallbacks, GoogleApiClient.OnConnectionFailedListener, LocationListener, OnMapReadyCallback, GoogleMap.OnMyLocationButtonClickListener {
 
     private static final int PLAY_SERVICES_RESOLUTION_REQUEST = 1;
+    private static final int ASK_LOC = 1;
     private GoogleApiClient mGoogleApiClient;
     private LocationRequest mLocationRequest = createLocationRequest();
     private GoogleMap mMap;
@@ -106,9 +108,25 @@ public class GpsActivity extends AppCompatActivity implements GoogleApiClient.Co
     @Override
     public void onConnected(Bundle bundle) {
         if (ActivityCompat.checkSelfPermission(this, Manifest.permission.ACCESS_FINE_LOCATION) != PackageManager.PERMISSION_GRANTED && ActivityCompat.checkSelfPermission(this, Manifest.permission.ACCESS_COARSE_LOCATION) != PackageManager.PERMISSION_GRANTED) {
+            ActivityCompat.requestPermissions(this, new String[] {Manifest.permission.ACCESS_FINE_LOCATION}, ASK_LOC);
             return;
         }
         LocationServices.FusedLocationApi.requestLocationUpdates(mGoogleApiClient, mLocationRequest, this);
+    }
+
+    @Override
+    public void onRequestPermissionsResult(int requestCode, @NonNull String[] permissions, @NonNull int[] grantResults) {
+        switch (requestCode) {
+            case ASK_LOC: {
+                if(grantResults.length>0 && grantResults[0]==PackageManager.PERMISSION_GRANTED) {
+                    enableMyLocation();
+                    LocationServices.FusedLocationApi.requestLocationUpdates(mGoogleApiClient, mLocationRequest, this);
+                } else {
+                    Toast.makeText(this, "Give me permission!!", Toast.LENGTH_SHORT).show();
+                }
+                break;
+            }
+        }
     }
 
     @Override
