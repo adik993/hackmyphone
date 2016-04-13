@@ -12,13 +12,9 @@ import android.content.IntentFilter;
 import android.os.Build;
 import android.os.Bundle;
 import android.support.design.widget.Snackbar;
-import android.support.v4.app.Fragment;
-import android.support.v7.widget.LinearLayoutManager;
-import android.support.v7.widget.RecyclerView;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
-import android.widget.ProgressBar;
 
 import com.adrian.hackmyphone.R;
 import com.adrian.hackmyphone.adapter.MyAdapter;
@@ -27,21 +23,14 @@ import com.adrian.hackmyphone.items.InfoItem;
 import com.adrian.hackmyphone.items.ProgressItem;
 import com.adrian.hackmyphone.items.Section;
 
-import java.util.ArrayList;
 import java.util.Collection;
 import java.util.List;
-import java.util.Set;
 
-import butterknife.Bind;
-import butterknife.ButterKnife;
 import rx.Observable;
 
-public class BluetoothFragment extends Fragment {
+public class BluetoothFragment extends BaseListFragment {
 
     private static final int REQ_BT_EN = 1;
-    @Bind(R.id.list)
-    RecyclerView mList;
-    MyAdapter mAdapter;
 
     BluetoothAdapter mBluetoothAdapter;
     BluetoothReceiver mBluetoothReceiver;
@@ -55,13 +44,9 @@ public class BluetoothFragment extends Fragment {
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState) {
-        View view = inflater.inflate(R.layout.fragment_bluetooth, container, false);
+        View view = super.onCreateView(inflater, container, savedInstanceState);
         mBluetoothAdapter=getBTAdapter();
-        ButterKnife.bind(this, view);
-        mList.setLayoutManager(new LinearLayoutManager(getActivity()));
-        mAdapter=new MyAdapter(new ArrayList<>());
         populateAdapter();
-        mList.setAdapter(mAdapter);
         mBluetoothReceiver=new BluetoothReceiver(mAdapter);
         if(mBluetoothAdapter.isEnabled()) {
             startDiscovery();

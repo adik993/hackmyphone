@@ -6,8 +6,6 @@ import android.hardware.SensorEvent;
 import android.hardware.SensorEventListener;
 import android.hardware.SensorManager;
 import android.os.Bundle;
-import android.support.v4.app.Fragment;
-import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
 import android.util.Log;
 import android.view.LayoutInflater;
@@ -19,7 +17,6 @@ import com.adrian.hackmyphone.CompassActivity;
 import com.adrian.hackmyphone.GpsActivity;
 import com.adrian.hackmyphone.R;
 import com.adrian.hackmyphone.adapter.ItemVisibilityScrollListener;
-import com.adrian.hackmyphone.adapter.MyAdapter;
 import com.adrian.hackmyphone.adapter.OnClickListener;
 import com.adrian.hackmyphone.items.IntentItem;
 import com.adrian.hackmyphone.items.Section;
@@ -28,21 +25,15 @@ import com.adrian.hackmyphone.items.SensorItem;
 import java.util.ArrayList;
 import java.util.List;
 
-import butterknife.Bind;
-import butterknife.ButterKnife;
 import rx.Observable;
 
-public class SensorsFragment extends Fragment implements OnClickListener, SensorEventListener, ItemVisibilityScrollListener.ItemVisibilityChange {
+public class SensorsFragment extends BaseListFragment implements OnClickListener, SensorEventListener, ItemVisibilityScrollListener.ItemVisibilityChange {
 
     private final String TAG=getClass().getName();
 
     private int RATE=1000000;
 
     SensorManager sensorManager;
-
-    @Bind(R.id.list)
-    RecyclerView list;
-    MyAdapter adapter;
 
     public static SensorsFragment newInstance() {
         SensorsFragment fragment = new SensorsFragment();
@@ -51,11 +42,7 @@ public class SensorsFragment extends Fragment implements OnClickListener, Sensor
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState) {
-        View view = inflater.inflate(R.layout.fragment_sensors, container, false);
-        ButterKnife.bind(this, view);
-
-        LinearLayoutManager layoutManager = new LinearLayoutManager(getActivity());
-        list.setLayoutManager(layoutManager);
+        View view = super.onCreateView(inflater, container, savedInstanceState);
         sensorManager= (SensorManager) getActivity().getSystemService(Context.SENSOR_SERVICE);
         List<Sensor> sensorList = sensorManager.getSensorList(Sensor.TYPE_ALL);
         ArrayList<Object> tmp = new ArrayList<>();
@@ -82,10 +69,9 @@ public class SensorsFragment extends Fragment implements OnClickListener, Sensor
                 .toList()
                 .toBlocking()
                 .subscribe(tmp::addAll);
-        adapter=new MyAdapter(tmp);
-        list.setAdapter(adapter);
-        adapter.setListener(this);
-        list.addOnScrollListener(new ItemVisibilityScrollListener(layoutManager, this));
+        mAdapter.elems.addAll(tmp);
+        mAdapter.setListener(this);
+        mList.addOnScrollListener(new ItemVisibilityScrollListener(mLayoutManager, this));
 
         return view;
     }
@@ -98,7 +84,7 @@ public class SensorsFragment extends Fragment implements OnClickListener, Sensor
 
     @Override
     public void onItemClick(int i, RecyclerView.ViewHolder vh) {
-        Object o = adapter.elems.get(i);
+        Object o = mAdapter.elems.get(i);
         if(o instanceof SensorItem) onItemClick(i, vh, (SensorItem)o);
         else if(o instanceof IntentItem) onItemClick(i, vh, (IntentItem)o);
     }
@@ -108,7 +94,7 @@ public class SensorsFragment extends Fragment implements OnClickListener, Sensor
     }
 
     private void onItemClick(int i, RecyclerView.ViewHolder vh, SensorItem item) {
-        Observable.from(adapter.elems)
+        Observable.from(mAdapter.elems)
                 .filter(o1 -> o1 instanceof SensorItem)
                 .map(o2 -> (SensorItem)o2)
                 .filter(sensorItem -> sensorItem.isRegistered() && !sensorItem.equals(item))
@@ -117,8 +103,8 @@ public class SensorsFragment extends Fragment implements OnClickListener, Sensor
                     sensorManager.unregisterListener(this, sensorItem1.getSensor());
                     Log.d(TAG, "Unregistered: " + sensorItem1.getSensor().getName());
                     sensorItem1.setRegistered(false);
-                    int index = adapter.elems.indexOf(sensorItem1);
-                    adapter.notifyItemChanged(index);
+                    int index = mAdapter.elems.indexOf(sensorItem1);
+                    mAdapter.notifyItemChanged(index);
                 });
         item.toggleRegistered();
         if(item.isRegistered()) {
@@ -129,7 +115,7 @@ public class SensorsFragment extends Fragment implements OnClickListener, Sensor
             sensorManager.unregisterListener(this, item.getSensor());
             Log.d(TAG, "Unregistered: " + item.getSensor().getName());
         }
-        adapter.notifyItemChanged(i);
+        mAdapter.notifyItemChanged(i);
     }
 
     @Override
@@ -140,14 +126,14 @@ public class SensorsFragment extends Fragment implements OnClickListener, Sensor
     @Override
     public void onSensorChanged(SensorEvent event) {
         int i=-1;
-        for (Object o : adapter.elems) {
+        for (Object o : mAdapter.elems) {
             i++;
             if(o instanceof SensorItem) {
                 SensorItem item= (SensorItem) o;
                 if(!event.sensor.getName().equals(item.getSensor().getName())) continue;
                 item.setValues(event.values);
 //                adapter.notifyItemChanged(i);
-                adapter.notifyDataSetChanged();
+                mAdapter.notifyDataSetChanged();
                 break;
             }
         }
@@ -161,7 +147,7 @@ public class SensorsFragment extends Fragment implements OnClickListener, Sensor
     @Override
     public void onItemHidden(int position) {
         Log.d(TAG, "Item hidden: "+position);
-        Object o = adapter.elems.get(position);
+        Object o = mAdapter.elems.get(position);
         if(o instanceof SensorItem) {
             SensorItem sensorItem= (SensorItem) o;
             sensorManager.unregisterListener(this, sensorItem.getSensor());
@@ -172,7 +158,7 @@ public class SensorsFragment extends Fragment implements OnClickListener, Sensor
     @Override
     public void onItemShown(int position) {
         Log.d(TAG, "Item shown: "+position);
-        Object o = adapter.elems.get(position);
+        Object o = mAdapter.elems.get(position);
         if(o instanceof SensorItem) {
             SensorItem sensorItem= (SensorItem) o;
             if(sensorItem.isRegistered()) {
