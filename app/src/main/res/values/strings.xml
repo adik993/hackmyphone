@@ -1,5 +1,5 @@
 <resources>
-    <string name="app_name">HackMyPhone</string>
+    <string name="app_name">AdrianSkrobacz-sensors</string>
     <string name="gps">GPS</string>
     <string name="raw_sensor_data">Surowe dane</string>
     <string name="combined_section">Obrobione dane</string>
