@@ -27,5 +27,9 @@
             android:id="@+id/contacts"
             android:checked="false"
             android:title="@string/contacts"/>
+
+        <item android:id="@+id/sms"
+              android:title="@string/sms"
+              android:checked="false" />
     </group>
 </menu>

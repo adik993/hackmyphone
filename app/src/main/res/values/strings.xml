@@ -23,4 +23,6 @@
     <string name="contacts">Kontakty</string>
     <string name="allow_read_contacts_to_work">Musisz zezwolić na odczyt kontaktów, aby ta zakładka działała</string>
     <string name="allow_location_to_scan">Musisz zezwolić na lokalizację, aby móc wyszukać sieci WiFi</string>
+    <string name="allow_read_sms_to_work">Musisz zezwolić na odczyt SMS, aby ta zakładka działała</string>
+    <string name="sms">SMS</string>
 </resources>

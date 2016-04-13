@@ -10,12 +10,12 @@ import android.support.v4.widget.DrawerLayout;
 import android.support.v7.app.ActionBarDrawerToggle;
 import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.Toolbar;
-import android.view.Gravity;
 import android.view.MenuItem;
 
 import com.adrian.hackmyphone.fragments.BluetoothFragment;
 import com.adrian.hackmyphone.fragments.ContactsFragment;
 import com.adrian.hackmyphone.fragments.SensorsFragment;
+import com.adrian.hackmyphone.fragments.SmsFragment;
 import com.adrian.hackmyphone.fragments.TelephonyFragment;
 import com.adrian.hackmyphone.fragments.WifiFragment;
 
@@ -63,6 +63,8 @@ public class MainActivity extends AppCompatActivity implements NavigationView.On
             replaceFragment(BluetoothFragment.newInstance());
         } else if(id == R.id.contacts && !fragmentExists(ContactsFragment.class)) {
             replaceFragment(ContactsFragment.newInstance());
+        } else if(id == R.id.sms && !fragmentExists(SmsFragment.class)) {
+            replaceFragment(SmsFragment.newInstance());
         }
         mDrawerLayout.closeDrawer(GravityCompat.START);
         return true;

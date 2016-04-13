@@ -2,6 +2,7 @@ package com.adrian.hackmyphone.fragments;
 
 
 import android.Manifest;
+import android.content.ContentResolver;
 import android.database.Cursor;
 import android.provider.ContactsContract;
 
@@ -30,6 +31,11 @@ public class ContactsFragment extends BaseContentProviderFragment<String, Sectio
     @Override
     protected String getPermission() {
         return Manifest.permission.READ_CONTACTS;
+    }
+
+    @Override
+    protected Cursor makeQuery(ContentResolver contentResolver) {
+        return contentResolver.query(ContactsContract.Contacts.CONTENT_URI, null, null, null, ContactsContract.Contacts.DISPLAY_NAME_PRIMARY);
     }
 
     @Override

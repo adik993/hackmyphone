@@ -4,7 +4,6 @@ import android.content.ContentResolver;
 import android.content.pm.PackageManager;
 import android.database.Cursor;
 import android.os.Bundle;
-import android.provider.ContactsContract;
 import android.support.annotation.NonNull;
 import android.support.design.widget.Snackbar;
 import android.support.v4.app.ActivityCompat;
@@ -30,12 +29,6 @@ public abstract class BaseContentProviderFragment<D, L> extends BaseListProgress
     private static final int REQ_PERMISSION = 1;
     Subscription mSubscription;
 
-    public static ContactsFragment newInstance() {
-        ContactsFragment fragment = new ContactsFragment();
-        return fragment;
-    }
-
-
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState) {
@@ -50,6 +43,7 @@ public abstract class BaseContentProviderFragment<D, L> extends BaseListProgress
     protected abstract Func1<Cursor, D> getMapCursor();
     protected abstract Func1<D, L> getMapToListObj();
     protected abstract String getPermission();
+    protected abstract Cursor makeQuery(ContentResolver contentResolver);
     protected abstract String getPermissionErrorMessage();
 
     protected void callPopulateList() {
@@ -93,7 +87,7 @@ public abstract class BaseContentProviderFragment<D, L> extends BaseListProgress
 
     private List<D> retrieve(Func1<Cursor, D> func) {
         ContentResolver contentResolver = getActivity().getContentResolver();
-        Cursor cursor = contentResolver.query(ContactsContract.Contacts.CONTENT_URI, null, null, null, ContactsContract.Contacts.DISPLAY_NAME_PRIMARY);
+        Cursor cursor = makeQuery(contentResolver);
         if(cursor==null) return new ArrayList<>(0);
         ArrayList<D> ret=new ArrayList<>(cursor.getCount());
         try {
